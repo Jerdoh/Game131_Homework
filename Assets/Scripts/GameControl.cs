@@ -7,11 +7,19 @@ using System.IO;
 
 public class GameControl : MonoBehaviour
 {
+    private GameObject capsule;
+
     public static GameControl control;
 
     public float health;
     public float experience;
-    public Color color1;
+    public int size;
+
+    /*
+    capsule = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+        capsule.transform.position = new Vector3(0,0,0);
+        capsule.transform.localScale += new Vector3(size, size, size);
+    */
 
     void Awake()
     {
@@ -24,12 +32,14 @@ public class GameControl : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        capsule = GameObject.Find("Capsule");
     }
 
     void OnGUI()
     {
         GUI.Label(new Rect(10, 10, 100, 30), "Health: " + health);
         GUI.Label(new Rect(10, 40, 150, 30), "Experience: " + experience);
+        capsule.transform.localScale = new Vector3(size, size, size);
     }
 
     public void Save()
@@ -40,7 +50,7 @@ public class GameControl : MonoBehaviour
         PlayerData data = new PlayerData();
         data.health = health;
         data.experience = experience;
-        data.color1 = color1;
+        data.size = size;
 
         bf.Serialize(file, data);
         file.Close();
@@ -57,7 +67,7 @@ public class GameControl : MonoBehaviour
 
             health = data.health;
             experience = data.experience;
-            color1 = data.color1;
+            size = data.size;
         }
     }
 }
@@ -67,5 +77,5 @@ class PlayerData
 {
     public float health;
     public float experience;
-    public Color color1;
+    public int size;
 }
